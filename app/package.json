@@ -1,0 +1,29 @@
+{
+	"name": "tests-app-transitions",
+	"main": "app.js",
+	"version": "2.0.0",
+	"author": "Telerik <support@telerik.com>",
+	"description": "tests-app-transitions",
+	"license": "Apache-2.0",
+	"keywords": [
+		"transitions",
+		"navigation",
+		"nativescript",
+		"{N}",
+		"tns"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:NativeScript/tests-app-transitions.git"
+	},
+	"bugs": {
+		"url": "https://github.com/NativeScript/NativeScript/issues"
+	},
+	"homepage": "https://github.com/NativeScript/tests-app-transitions",
+	"android": {
+		"v8Flags": "--expose_gc"
+	},
+	"devDependencies": {
+		"nativescript-dev-typescript": "^0.3.0"
+	}
+}
