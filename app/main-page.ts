@@ -14,11 +14,10 @@ if (platform.device.os === platform.platformNames.ios) {
     availableTransitions = availableTransitions.concat(["curl"]);
 }
 
-let duration = 2000;
+let duration = 5000;
 let wait = duration / 4;
 
 export function onLoaded(args: EventData) {
-    console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> MAIN PAGE ON LOADED");
     let mainPage = (<Page>args.object);
     let container = mainPage.getViewById<LayoutBase>("container");
     if (container.getChildrenCount() > 0) {

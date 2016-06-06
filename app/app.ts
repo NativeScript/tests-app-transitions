@@ -4,8 +4,6 @@ trace.enable();
 trace.setCategories(trace.categories.concat(
     trace.categories.NativeLifecycle,
     trace.categories.Navigation,
-    trace.categories.Transition,
-    trace.categories.ViewHierarchy,
-    trace.categories.VisualTreeEvents
+    trace.categories.Transition
 ));
 application.start({ moduleName: "main-page" });
