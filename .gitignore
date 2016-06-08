@@ -1,6 +1,7 @@
-/platforms/
+/platforms
 /hooks
-/node_modules/
+/node_modules
+/lib
 
 /app/**/*.js
 /app/**/*.map

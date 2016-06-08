@@ -40,7 +40,9 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
     button1.on("tap", (e) => {
         waterfall([
             function(callback){
-                topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
+                if (platform.isAndroid){
+                    topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
+                }
                 callback();
             },
             function(callback){
@@ -52,7 +54,9 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
                 setTimeout(callback, duration + wait);
             }
         ], function (err, result) {
-            topmostFrame().android.cachePagesOnNavigate = false;
+            if (platform.isAndroid){
+                topmostFrame().android.cachePagesOnNavigate = false;
+            }
             if (err){
                 throw err;
             }
@@ -65,7 +69,9 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
     button2.on("tap", (e) => {
         waterfall([
             function(callback){
-                topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
+                if (platform.isAndroid){
+                    topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
+                }
                 callback();
             },
             function(callback){
@@ -77,7 +83,9 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
                 setTimeout(callback, duration + wait);                   
             },
             function(callback){
-                topmostFrame().android.cachePagesOnNavigate = false;
+                if (platform.isAndroid){
+                    topmostFrame().android.cachePagesOnNavigate = false;
+                }
                 topmostFrame().navigate({create: () => mainPage, clearHistory: true, animated: false}); 
                 callback();
             },
@@ -94,7 +102,9 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
     button3.on("tap", (e) => {
         waterfall([
             function(callback){
-                topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
+                if (platform.isAndroid){
+                    topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
+                }
                 callback();
             },
             function(callback){
@@ -106,7 +116,9 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
                 setTimeout(callback, duration + wait);                   
             },
             function(callback){
-                topmostFrame().android.cachePagesOnNavigate = false;
+                if (platform.isAndroid){
+                    topmostFrame().android.cachePagesOnNavigate = false;
+                }
                 topmostFrame().navigate({create: () => mainPage, clearHistory: true, animated: false}); 
                 callback();
             },
