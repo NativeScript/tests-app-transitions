@@ -14,7 +14,7 @@ if (platform.device.os === platform.platformNames.ios) {
     availableTransitions = availableTransitions.concat(["curl"]);
 }
 
-let duration = 9000;
+let duration = 10000;
 let wait = 2000;
 
 export function onLoaded(args: EventData) {
