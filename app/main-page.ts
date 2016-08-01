@@ -15,6 +15,10 @@ if (platform.device.os === platform.platformNames.ios) {
 }
 
 let duration = 10000;
+if (platform.isIOS) {
+    duration = 20000;
+}
+
 let wait = 2000;
 
 export function onLoaded(args: EventData) {
@@ -23,41 +27,42 @@ export function onLoaded(args: EventData) {
     if (container.getChildrenCount() > 0) {
         return;
     }
-    
-    for (let i = 0, length = availableTransitions.length; i < length; i++){    
+
+    for (let i = 0, length = availableTransitions.length; i < length; i++) {
         let transitionName = availableTransitions[i];
-        createButtons(transitionName, container, mainPage, false);     
+        createButtons(transitionName, container, mainPage, false);
     }
 
-    if (platform.isAndroid){
-        createButtons("slide", container, mainPage, true);     
+    if (platform.isAndroid) {
+        createButtons("slide", container, mainPage, true);
     }
 }
 
-function createButtons(transitionName: string, container: LayoutBase, mainPage: Page, cachePagesOnNavigate: boolean){
+function createButtons(transitionName: string, container: LayoutBase, mainPage: Page, cachePagesOnNavigate: boolean) {
     let button1 = new Button();
+
     button1.text = `${transitionName} trans -> go back${cachePagesOnNavigate ? " + CPON" : ""}`;
     button1.on("tap", (e) => {
         waterfall([
-            function(callback){
-                if (platform.isAndroid){
+            function (callback) {
+                if (platform.isAndroid) {
                     topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
                 }
                 callback();
             },
-            function(callback){
-                navigate("1", transitionName);                    
-                setTimeout(callback, duration + wait);                   
+            function (callback) {
+                navigate("1", transitionName);
+                setTimeout(callback, duration + wait);
             },
-            function(callback){
-                topmostFrame().goBack(); 
+            function (callback) {
+                topmostFrame().goBack();
                 setTimeout(callback, duration + wait);
             }
         ], function (err, result) {
-            if (platform.isAndroid){
+            if (platform.isAndroid) {
                 topmostFrame().android.cachePagesOnNavigate = false;
             }
-            if (err){
+            if (err) {
                 throw err;
             }
         });
@@ -68,62 +73,62 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
     button2.text = `no trans -> ${transitionName} trans + CH${cachePagesOnNavigate ? " + CPON" : ""}`;
     button2.on("tap", (e) => {
         waterfall([
-            function(callback){
-                if (platform.isAndroid){
+            function (callback) {
+                if (platform.isAndroid) {
                     topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
                 }
                 callback();
             },
-            function(callback){
-                navigate("1");                    
-                setTimeout(callback, wait);                   
+            function (callback) {
+                navigate("1");
+                setTimeout(callback, wait);
             },
-            function(callback){
-                navigate("2", transitionName, true);                    
-                setTimeout(callback, duration + wait);                   
+            function (callback) {
+                navigate("2", transitionName, true);
+                setTimeout(callback, duration + wait);
             },
-            function(callback){
-                if (platform.isAndroid){
+            function (callback) {
+                if (platform.isAndroid) {
                     topmostFrame().android.cachePagesOnNavigate = false;
                 }
-                topmostFrame().navigate({create: () => mainPage, clearHistory: true, animated: false}); 
+                topmostFrame().navigate({ create: () => mainPage, clearHistory: true, animated: false });
                 callback();
             },
         ], function (err, result) {
-            if (err){
+            if (err) {
                 throw err;
             }
         });
     });
     container.addChild(button2);
-    
+
     let button3 = new Button();
     button3.text = `${transitionName} trans -> ${transitionName} trans + CH${cachePagesOnNavigate ? " + CPON" : ""}`;
     button3.on("tap", (e) => {
         waterfall([
-            function(callback){
-                if (platform.isAndroid){
+            function (callback) {
+                if (platform.isAndroid) {
                     topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
                 }
                 callback();
             },
-            function(callback){
-                navigate("1", transitionName);                    
-                setTimeout(callback, duration + wait);                   
+            function (callback) {
+                navigate("1", transitionName);
+                setTimeout(callback, duration + wait);
             },
-            function(callback){
-                navigate("2", transitionName, true);                    
-                setTimeout(callback, duration + wait);                   
+            function (callback) {
+                navigate("2", transitionName, true);
+                setTimeout(callback, duration + wait);
             },
-            function(callback){
-                if (platform.isAndroid){
+            function (callback) {
+                if (platform.isAndroid) {
                     topmostFrame().android.cachePagesOnNavigate = false;
                 }
-                topmostFrame().navigate({create: () => mainPage, clearHistory: true, animated: false}); 
+                topmostFrame().navigate({ create: () => mainPage, clearHistory: true, animated: false });
                 callback();
             },
         ], function (err, result) {
-            if (err){
+            if (err) {
                 throw err;
             }
         });
@@ -131,7 +136,7 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
     container.addChild(button3);
 }
 
-function navigate(text: string, transitionName?: string, clearHistory?: boolean){
+function navigate(text: string, transitionName?: string, clearHistory?: boolean) {
     let navigationTransition = createNavigationTransition(transitionName);
     topmostFrame().navigate({
         create: () => new NavPage(text),
@@ -141,7 +146,7 @@ function navigate(text: string, transitionName?: string, clearHistory?: boolean)
     });
 }
 
-function createNavigationTransition(transitionName: string): NavigationTransition{
+function createNavigationTransition(transitionName: string): NavigationTransition {
     let navigationTransition: NavigationTransition;
     if (transitionName === "custom") {
         let customTransitionModule = require("./custom-transition");
