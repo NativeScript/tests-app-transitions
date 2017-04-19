@@ -14,8 +14,7 @@
   },
   "dependencies": {
     "async-waterfall": "^0.1.5",
-    "tns-core-modules": "internal-preview",
-    "tns-platform-declarations": "rc"
+    "tns-core-modules": "internal-preview"
   },
   "devDependencies": {
     "babel-traverse": "6.9.0",
@@ -23,8 +22,9 @@
     "babylon": "6.8.0",
     "filewalker": "0.1.2",
     "lazy": "1.0.11",
-    "nativescript-dev-typescript": "~0.4.0",
+    "nativescript-dev-typescript": "^0.4.2",
     "nativescript-dev-android-snapshot": "^0.*.*",
-    "typescript": "~2.2.2"
+    "typescript": "~2.2.2",
+    "tns-platform-declarations": "*"
   }
 }

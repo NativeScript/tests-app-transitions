@@ -1,4 +1,4 @@
-﻿import application = require("application");
+﻿import * as application from "tns-core-modules/application";
 import * as trace from "trace";
 trace.enable();
 trace.setCategories(trace.categories.concat(
