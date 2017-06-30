@@ -6,15 +6,15 @@
   "nativescript": {
     "id": "org.nativescript.testsapptransitions",
     "tns-ios": {
-      "version": "3.0.0"
+      "version": "next"
     },
     "tns-android": {
-      "version": "3.0.0"
+      "version": "3.2.0-next-2017-06-28-1901"
     }
   },
   "dependencies": {
     "async-waterfall": "^0.1.5",
-    "tns-core-modules": "internal-preview"
+    "tns-core-modules": "next"
   },
   "devDependencies": {
     "babel-traverse": "6.9.0",
@@ -22,8 +22,7 @@
     "babylon": "6.8.0",
     "filewalker": "0.1.2",
     "lazy": "1.0.11",
-    "nativescript-dev-typescript": "^0.4.2",
-    "nativescript-dev-android-snapshot": "^0.*.*",
+    "nativescript-dev-typescript": "^0.5.0",
     "typescript": "~2.2.2",
     "tns-platform-declarations": "*"
   }
