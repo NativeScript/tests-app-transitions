@@ -6,25 +6,28 @@
   "nativescript": {
     "id": "org.nativescript.testsapptransitions",
     "tns-ios": {
-      "version": "3.1.0"
+      "version": "4.0.0-2018-02-15-02"
     },
     "tns-android": {
-      "version": "3.1.0"
+      "version": "3.4.1-2018-02-06-02"
     }
   },
   "dependencies": {
     "async-waterfall": "^0.1.5",
-    "tns-core-modules": "~2.5.0",
-    "tns-platform-declarations": "~3.1.0"
+    "tns-core-modules": "next",
+    "tns-platform-declarations": "next"
   },
   "devDependencies": {
-    "babel-traverse": "6.9.0",
-    "babel-types": "6.9.1",
-    "babylon": "6.8.0",
-    "filewalker": "0.1.2",
+    "babel-traverse": "6.26.0",
+    "babel-types": "6.26.0",
+    "babylon": "6.18.0",
     "lazy": "1.0.11",
-    "nativescript-dev-android-snapshot": "^0.*.*",
-    "nativescript-dev-typescript": "~0.3.7",
-    "typescript": "~2.4.1"
+    "nativescript-dev-appium": "^3.3.0-2018-02-21-01",
+    "nativescript-dev-typescript": "^0.6.0",
+    "typescript": "~2.7.0"
+  },
+  "scripts": {
+    "e2e": "tsc -p e2e && mocha --opts ./e2e/config/mocha.opts",
+    "compile-tests": "tsc -p e2e --watch"
   }
 }

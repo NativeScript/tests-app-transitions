@@ -1,3 +1,10 @@
-<Page xmlns="http://schemas.nativescript.org/tns.xsd" id="main-page" loaded="onLoaded" backgroundColor="magenta">
-  <WrapLayout automationText="container" id="container" orientation="vertical" backgroundColor="magenta"/>
+<Page 
+  xmlns="http://schemas.nativescript.org/tns.xsd" id="main-page" loaded="onLoaded">
+  <GridLayout columns="*,*" rows="auto,*">
+    <ScrollView rowSpan="2" row="0" col="0">
+      <StackLayout automationText="default-container" id="default-container" />
+    </ScrollView>
+    <StackLayout automationText="all-container" id="all-container" col="1" row="0"/>
+    <StackLayout automationText="no-trans-container" id="no-trans-container" col="1" row="1" />
+  </GridLayout>
 </Page>

@@ -1,4 +1,6 @@
 ﻿import { Transition, AndroidTransitionType } from "tns-core-modules/ui/transition";
+
+
 export class CustomTransition extends Transition {
     public createAndroidAnimator(transitionType: string): android.animation.Animator {
         const scaleValues = (<any>Array).create("float", 2);
