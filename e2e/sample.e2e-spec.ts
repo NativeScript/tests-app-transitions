@@ -1,44 +1,54 @@
-import { AppiumDriver, createDriver, SearchOptions } from "nativescript-dev-appium";
 import { assert } from "chai";
+import { createDriver, AppiumDriver, SearchOptions, loadFrameComparer, FrameComparer } from "nativescript-dev-appium";
+import { FrameHelper } from "./helpers/frame-helper"
 
-describe("sample scenario", () => {
+describe("transitions", function () {
     const defaultWaitTime = 5000;
     let driver: AppiumDriver;
+    let frameComparer: FrameComparer;
+    let frameHelper: FrameHelper;
 
     before(async () => {
         driver = await createDriver();
+        frameComparer = loadFrameComparer();
+        frameHelper = new FrameHelper(frameComparer);
     });
 
     after(async () => {
         await driver.quit();
-        console.log("Quit driver!");
+        console.log("Quit driver!"); 5
     });
 
     afterEach(async function () {
+        frameHelper.reset();
         if (this.currentTest.state === "failed") {
             await driver.logScreenshot(this.currentTest.title);
         }
     });
 
-    it("should find an element by text", async () => {
-        const btnTap = await driver.findElementByText("TAP", SearchOptions.exact);
-        await btnTap.click();
+    const flipTransGoBack = "flip trans -> go back"
+    it(flipTransGoBack, async function () {
+        const videoPath = driver.startRecordingVideo(flipTransGoBack);
+        const btnRunAllTransitionsAtOnce = (await driver.findElementsByClassName(driver.locators.button))[1];
+        await btnRunAllTransitionsAtOnce.click()
 
-        const message = " taps left";
-        const lblMessage = await driver.findElementByText(message, SearchOptions.contains);
-        assert.equal(await lblMessage.text(), "41" + message);
+        const btn = await driver.findElementByAccessibilityId(flipTransGoBack, 80);
+        console.log(`${flipTransGoBack} isDisplayed(): ${await btn.isDisplayed()}`);
+        while (!(await btn.isDisplayed())) {
+            console.log(`${flipTransGoBack} btn is not displayed!`)
+        }
 
-        // Image verification
-        // const screen = await driver.compareScreen("hello-world-41");
-        // assert.isTrue(screen);
-    });
+        while ((await btn.location()).x > 10) {
+            console.log(`${flipTransGoBack} btn x: ${(await btn.location()).x}!`)
+        }
 
-    it("should find an element by type", async () => {
-        const btnTap = await driver.findElementByClassName(driver.locators.button);
-        await btnTap.click();
+        const path = await driver.stopRecordingVideo();
+        await frameComparer.processVideo(path, flipTransGoBack);
 
-        const message = " taps left";
-        const lblMessage = await driver.findElementByText(message, SearchOptions.contains);
-        assert.equal(await lblMessage.text(), "40" + message);
+        frameHelper.compareFrames(8, 10, 0.01);
+        frameHelper.compareFrames(32, 10, 0.01);
+        frameHelper.compareFrames(44, 10, 0.01);
+
+        frameHelper.assertFrames();
     });
 });

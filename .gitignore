@@ -7,3 +7,10 @@
 /app/**/*.map
 
 .DS_Store
+tempFramesFolder
+reports
+e2e/**/*.js
+e2e/**/*.map
+e2e/**/*.mp4
+test-results.xml
+package-lock.json

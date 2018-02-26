@@ -19,7 +19,7 @@ const availableTransitions = isIOS ?
         "slideTop", "slideTop", "slideBottom", "slideBottom", "slideRight", "slideRight", "slide", "slide",
         "fade", "fade", "no anim", "no anim"];
 
-const duration = 1000;//platform.isIOS ? 1000 : 20000;
+const duration = 3000;//platform.isIOS ? 1000 : 20000;
 const wait = 2000;
 const defaultContainer = "default-container";
 const noTransContainer = "no-trans-container";
@@ -66,6 +66,7 @@ export function onLoaded(args: EventData) {
 
     const btn = createButton(btnColors[0]);
     btn.text = "all";
+    btn.automationText = btn.text;
     btn.on('tap', (e) => {
         availableTransitions.forEach(v => {
             const animated = v !== availableTransitions[availableTransitions.length - 1];
@@ -94,6 +95,7 @@ function createButtons(transitionName: string, containers: any, mainPage: Page) 
 
     const button1 = createButton(btnColors[0]);
     button1.text = `${transitionName} trans -> go back`;
+    button1.automationText = button1.text;
     button1.on("tap", (e) => {
         waterfall([
             function (callback) {
@@ -117,6 +119,7 @@ function createButtons(transitionName: string, containers: any, mainPage: Page) 
 
     const button2 = createButton(btnColors[1]);;
     button2.text = `no trans -> ${transitionName} trans + CH`;
+    button2.automationText = button2.text;
     button2.on("tap", (e) => {
         waterfall([
             function (callback) {
@@ -145,6 +148,7 @@ function createButtons(transitionName: string, containers: any, mainPage: Page) 
     const button3 = createButton(btnColors[1]);
 
     button3.text = `${transitionName} trans -> ${transitionName} trans + CH`;
+    button3.automationText = button3.text;
     button3.on("tap", (e) => {
         waterfall([
             function (callback) {
