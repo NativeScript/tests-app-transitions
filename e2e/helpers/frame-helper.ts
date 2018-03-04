@@ -7,14 +7,27 @@ export class FrameHelper {
     constructor(private frameComparer: FrameComparer) { }
 
     public async compareFrames(frameNumber, tolleranceRange = 10, tollerance = 0.01) {
-        console.log(`Compare frame no: ${frameNumber}`)
-        this._imagesResults.set(frameNumber, await this.frameComparer.compareFrames(frameNumber, tolleranceRange, tollerance));
+        console.log(`Compare frame number: ${frameNumber}`);
+        const result = await this.frameComparer.compareFrames(frameNumber, tolleranceRange, tollerance);
+        this._imagesResults.set(frameNumber, result);
     }
 
     public assertFrames() {
-        for (let key in this._imagesResults) {
-            assert.isTrue(this._imagesResults.get(key), `Image is not correct ${key}`);
-        }
+        let shouldFailTest = false;
+        console.log();
+        console.log("==============================");
+        this._imagesResults.forEach((v, k, map) => {
+            if (!this._imagesResults.get(k)) {
+                console.log(`Frame ${k} is not correct!!!`);
+                shouldFailTest = true;
+            }else{
+                console.log(`Frame ${k} is correct!!!`);                
+            }
+        });
+
+        assert.isFalse(shouldFailTest, "Frame comparing failed!!!");
+        console.log("==============================");
+        console.log();        
     }
 
     public reset() {

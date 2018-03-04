@@ -82,20 +82,25 @@ export function onLoaded(args: EventData) {
     }
 }
 
+const setBtnAutomationText = (btn) => {
+    btn.automationText = btn.text.replace(/\s/ig, "").replace("->", "");
+    console.log(btn.automationText);
+}
+
 function createButtons(transitionName: string, containers: any, mainPage: Page) {
     const fillContainer = (btn: Button) => {
         if (btn.text.startsWith("no trans") || btn.text.startsWith("custom")) {
             btn.style.backgroundColor = new Color(btnColors[1]);
             containers[noTransContainer].addChild(btn);
         } else {
-            btn.style.backgroundColor = new Color(btnColors[0]);                        
+            btn.style.backgroundColor = new Color(btnColors[0]);
             containers[defaultContainer].addChild(btn);
         }
     }
 
     const button1 = createButton(btnColors[0]);
     button1.text = `${transitionName} trans -> go back`;
-    button1.automationText = button1.text;
+    setBtnAutomationText(button1);
     button1.on("tap", (e) => {
         waterfall([
             function (callback) {
@@ -119,7 +124,8 @@ function createButtons(transitionName: string, containers: any, mainPage: Page) 
 
     const button2 = createButton(btnColors[1]);;
     button2.text = `no trans -> ${transitionName} trans + CH`;
-    button2.automationText = button2.text;
+    setBtnAutomationText(button2);
+    
     button2.on("tap", (e) => {
         waterfall([
             function (callback) {
@@ -148,7 +154,8 @@ function createButtons(transitionName: string, containers: any, mainPage: Page) 
     const button3 = createButton(btnColors[1]);
 
     button3.text = `${transitionName} trans -> ${transitionName} trans + CH`;
-    button3.automationText = button3.text;
+    setBtnAutomationText(button3);
+    
     button3.on("tap", (e) => {
         waterfall([
             function (callback) {
