@@ -12,6 +12,6 @@ reports
 e2e/**/*.js
 e2e/**/*.map
 e2e/**/*.mp4
-/**/*.png
+
 test-results.xml
 package-lock.json
