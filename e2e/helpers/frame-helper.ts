@@ -10,6 +10,8 @@ export class FrameHelper {
         console.log(`Compare frame number: ${frameNumber}`);
         const result = await this.frameComparer.compareFrames(frameNumber, tolleranceRange, tollerance);
         this._imagesResults.set(frameNumber, result);
+
+        return result;
     }
 
     public assertFrames() {

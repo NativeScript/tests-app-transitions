@@ -9,7 +9,7 @@ export class NavPage extends Page {
         super();
         NavPage._id++;
         this.id = NavPage._id.toString();
-        this.style.backgroundColor = <any>((i % 2 == 0) ? 'blue' : 'yellow');
+        this.style.backgroundColor = <any>'blue';// <any>((i % 2 == 0) ? 'blue' : 'yellow');
         const label = new Label();
         label.textWrap = true;
         label.text = text;

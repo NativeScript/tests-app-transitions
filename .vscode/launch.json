@@ -15,7 +15,8 @@
                 "${workspaceFolder}/e2e",
                 "--runType",
                 "sim.iPhone7.iOS110",
-                "--reuseDevice"
+                "--reuseDevice",
+                "-v"
             ],
             "internalConsoleOptions": "openOnSessionStart"
         },

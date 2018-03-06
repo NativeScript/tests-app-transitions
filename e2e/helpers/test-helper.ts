@@ -2,11 +2,11 @@ import { AppiumDriver } from "nativescript-dev-appium";
 import { FrameHelper } from "./frame-helper";
 
 export class TestHelper {
-    constructor(private _driver: AppiumDriver){
+    constructor(private _driver: AppiumDriver) {
     }
 
     public executeTransition = async (buttonAutomationId, waitTimeout = 20000) => {
-        const btnRunAllTransitionsAtOnce = (await this._driver.findElementByAccessibilityId(buttonAutomationId, 10));
+        const btnRunAllTransitionsAtOnce = (await this._driver.findElementByAccessibilityId(buttonAutomationId, waitTimeout / 1000));
         const btnLocation = await btnRunAllTransitionsAtOnce.location();
         await btnRunAllTransitionsAtOnce.tap();
 

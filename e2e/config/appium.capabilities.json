@@ -80,6 +80,7 @@
         "app": ""
     },
     "sim.iPhone7.iOS110": {
+        "newCommandTimeout":160,
         "platformName": "iOS",
         "platformVersion": "11.2",
         "deviceName": "iPhone 7 110",
