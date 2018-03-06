@@ -36,9 +36,9 @@ describe("transitions - flip trans", function () {
             // await frameHelper.compareFrames(125, 10, 0.05);
             // await frameHelper.compareFrames(158, 10, 0.1);
             await Promise.all([
-                frameHelper.compareFrames(68, 10, 0.05),
-                frameHelper.compareFrames(125, 10, 0.05),
-                frameHelper.compareFrames(158, 10, 0.1)]);
+                frameHelper.compareFrames(63, 10, 0.1),
+                frameHelper.compareFrames(125, 10, 0.1),
+                frameHelper.compareFrames(147, 12, 0.1)]);
                 break;
             default:
                 break;

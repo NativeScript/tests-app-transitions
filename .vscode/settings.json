@@ -8,6 +8,8 @@
         "**/*.js": true,
         "**/*.map": true,
         "**/app": true,
+        ".gitignore": true,
+        "references*": true,
         "node_modules": true,
         "hooks": true,
         "platforms": true,
