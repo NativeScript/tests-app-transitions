@@ -1,21 +1,21 @@
-﻿import transition = require("ui/transition");
+﻿import { Transition } from "tns-core-modules/ui/transition";
 
-export class CustomTransition extends transition.Transition {
+export class CustomTransition extends Transition {
     public animateIOSTransition(containerView: UIView, fromView: UIView, toView: UIView, operation: UINavigationControllerOperation, completion: (finished: boolean) => void): void {
         let originalToViewTransform = toView.transform;
         let originalFromViewTransform = fromView.transform;
 
         //http://stackoverflow.com/questions/216076/uiview-scale-to-0-using-cgaffinetransformmakescale
         let scaleTransform = CGAffineTransformMakeScale(0.0001, 0.0001);
-        
+
         toView.transform = scaleTransform;
         fromView.transform = CGAffineTransformIdentity;
 
         switch (operation) {
-            case UINavigationControllerOperation.UINavigationControllerOperationPush:
+            case UINavigationControllerOperation.Push:
                 containerView.insertSubviewAboveSubview(toView, fromView);
                 break;
-            case UINavigationControllerOperation.UINavigationControllerOperationPop:
+            case UINavigationControllerOperation.Pop:
                 containerView.insertSubviewBelowSubview(toView, fromView);
                 break;
         }
@@ -27,9 +27,9 @@ export class CustomTransition extends transition.Transition {
             toView.transform = CGAffineTransformIdentity;
             fromView.transform = scaleTransform;
         }, (finished: boolean) => {
-            toView.transform = originalToViewTransform; 
-            fromView.transform = originalFromViewTransform; 
-            completion(finished);   
+            toView.transform = originalToViewTransform;
+            fromView.transform = originalFromViewTransform;
+            completion(finished);
         });
     }
 }

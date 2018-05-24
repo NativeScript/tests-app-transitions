@@ -1,53 +1,109 @@
-import { EventData } from "data/observable";
-import { Page } from "ui/page";
-import { LayoutBase } from "ui/layouts/layout-base";
-import { Button } from "ui/button";
-import { Label } from "ui/label";
-import * as platform from "platform";
-import { topmost as topmostFrame, NavigationTransition} from "ui/frame";
+import { EventData } from "tns-core-modules/data/observable";
+import { Page } from "tns-core-modules/ui/page";
+import { LayoutBase } from "tns-core-modules/ui/layouts/layout-base";
+import { Button } from "tns-core-modules/ui/button";
+import { Label } from "tns-core-modules/ui/label";
+import { isIOS, isAndroid } from "tns-core-modules/platform";
+import { topmost as topmostFrame, NavigationTransition } from "tns-core-modules/ui/frame";
+import { Color } from "tns-core-modules/color";
 import { NavPage } from "./nav-page";
+import { CustomTransition } from "./custom-transition";
+const waterfall = require('async-waterfall');
 
-let waterfall = require('async-waterfall');
+const btnColors = ["#00e676", "#3d5afe"];
 
-let availableTransitions = ["flip", "slide", "fade", "custom"];
-if (platform.device.os === platform.platformNames.ios) {
-    availableTransitions = availableTransitions.concat(["curl"]);
+const availableTransitions = isIOS ?
+    ["flip", "flip", "slide", "slide", "fade", "fade", "custom", "custom", "default", "default", "curl", "curl"] :
+    ["default", "default", "custom", "custom", "explode", "explode",
+        "flipLeft", "flipLeft", "flip", "flip",
+        "slideTop", "slideTop", "slideBottom", "slideBottom", "slideRight", "slideRight", "slide", "slide",
+        "fade", "fade", "no anim", "no anim"];
+
+const duration = 3000;//platform.isIOS ? 1000 : 20000;
+const wait = 2000;
+const defaultContainer = "default-container";
+const noTransContainer = "no-trans-container";
+//const customContainer = "custom-container";//
+const allContainer = "all-container";//
+
+const createButton = (color: string) => {
+    const btn = new Button();
+    if (isAndroid) {
+        btn.style.height = 25;
+        btn.style.fontSize = 10;
+        btn.style.padding = 0;
+    } else {
+        btn.style.padding = 5;
+        btn.style.fontSize = 13;
+    }
+    btn.style.marginRight = 5;
+    btn.style.marginBottom = 5;
+    btn.style.color = new Color("white");
+    btn.style.backgroundColor = new Color(color);
+    btn.style.borderRadius = 5;
+
+    return btn;
 }
-
-let duration = 10000;
-if (platform.isIOS) {
-    duration = 20000;
-}
-
-let wait = 2000;
 
 export function onLoaded(args: EventData) {
-    let mainPage = (<Page>args.object);
-    let container = mainPage.getViewById<LayoutBase>("container");
-    if (container.getChildrenCount() > 0) {
+    const mainPage = (<Page>args.object);
+    const getViewById = (id) => {
+        return mainPage.getViewById<LayoutBase>(id);
+    }
+    const defaultContainerLayout = getViewById(defaultContainer);
+    const noTransContainerLayout = getViewById(noTransContainer);
+    const allContainerLayout = getViewById(allContainer);
+    const containers: any = {};
+    containers[noTransContainer] = noTransContainerLayout;
+    containers[defaultContainer] = defaultContainerLayout;
+
+
+    console.log("allContainerLayout::", allContainerLayout);
+    console.log("container::", containers);
+    if (allContainerLayout.getChildrenCount() > 0) {
         return;
     }
 
-    for (let i = 0, length = availableTransitions.length; i < length; i++) {
-        let transitionName = availableTransitions[i];
-        createButtons(transitionName, container, mainPage, false);
-    }
+    const btn = createButton(btnColors[0]);
+    btn.text = "all";
+    btn.automationText = btn.text;
+    btn.on('tap', (e) => {
+        availableTransitions.forEach(v => {
+            const animated = v !== availableTransitions[availableTransitions.length - 1];
+            navigate(v, v, false, animated);
+        })
+    });
 
-    if (platform.isAndroid) {
-        createButtons("slide", container, mainPage, true);
+    allContainerLayout.addChild(btn);
+
+    for (let i = 0, containerCounter = 0; i < availableTransitions.length; i += 2, containerCounter++) {
+        console.log(`${containerCounter}`)
+        createButtons(availableTransitions[i], containers, mainPage);
     }
 }
 
-function createButtons(transitionName: string, container: LayoutBase, mainPage: Page, cachePagesOnNavigate: boolean) {
-    let button1 = new Button();
+const setBtnAutomationText = (btn) => {
+    btn.automationText = btn.text.replace(/\s/ig, "").replace("->", "");
+    console.log(btn.automationText);
+}
 
-    button1.text = `${transitionName} trans -> go back${cachePagesOnNavigate ? " + CPON" : ""}`;
+function createButtons(transitionName: string, containers: any, mainPage: Page) {
+    const fillContainer = (btn: Button) => {
+        if (btn.text.startsWith("no trans") || btn.text.startsWith("custom")) {
+            btn.style.backgroundColor = new Color(btnColors[1]);
+            containers[noTransContainer].addChild(btn);
+        } else {
+            btn.style.backgroundColor = new Color(btnColors[0]);
+            containers[defaultContainer].addChild(btn);
+        }
+    }
+
+    const button1 = createButton(btnColors[0]);
+    button1.text = `${transitionName} trans -> go back`;
+    setBtnAutomationText(button1);
     button1.on("tap", (e) => {
         waterfall([
             function (callback) {
-                if (platform.isAndroid) {
-                    topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
-                }
                 callback();
             },
             function (callback) {
@@ -59,24 +115,20 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
                 setTimeout(callback, duration + wait);
             }
         ], function (err, result) {
-            if (platform.isAndroid) {
-                topmostFrame().android.cachePagesOnNavigate = false;
-            }
             if (err) {
                 throw err;
             }
         });
     });
-    container.addChild(button1);
+    fillContainer(button1);
 
-    let button2 = new Button();
-    button2.text = `no trans -> ${transitionName} trans + CH${cachePagesOnNavigate ? " + CPON" : ""}`;
+    const button2 = createButton(btnColors[1]);;
+    button2.text = `no trans -> ${transitionName} trans + CH`;
+    setBtnAutomationText(button2);
+    
     button2.on("tap", (e) => {
         waterfall([
             function (callback) {
-                if (platform.isAndroid) {
-                    topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
-                }
                 callback();
             },
             function (callback) {
@@ -88,9 +140,6 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
                 setTimeout(callback, duration + wait);
             },
             function (callback) {
-                if (platform.isAndroid) {
-                    topmostFrame().android.cachePagesOnNavigate = false;
-                }
                 topmostFrame().navigate({ create: () => mainPage, clearHistory: true, animated: false });
                 callback();
             },
@@ -100,16 +149,16 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
             }
         });
     });
-    container.addChild(button2);
+    fillContainer(button2);
 
-    let button3 = new Button();
-    button3.text = `${transitionName} trans -> ${transitionName} trans + CH${cachePagesOnNavigate ? " + CPON" : ""}`;
+    const button3 = createButton(btnColors[1]);
+
+    button3.text = `${transitionName} trans -> ${transitionName} trans + CH`;
+    setBtnAutomationText(button3);
+    
     button3.on("tap", (e) => {
         waterfall([
             function (callback) {
-                if (platform.isAndroid) {
-                    topmostFrame().android.cachePagesOnNavigate = cachePagesOnNavigate;
-                }
                 callback();
             },
             function (callback) {
@@ -121,9 +170,6 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
                 setTimeout(callback, duration + wait);
             },
             function (callback) {
-                if (platform.isAndroid) {
-                    topmostFrame().android.cachePagesOnNavigate = false;
-                }
                 topmostFrame().navigate({ create: () => mainPage, clearHistory: true, animated: false });
                 callback();
             },
@@ -133,33 +179,18 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
             }
         });
     });
-    container.addChild(button3);
+    fillContainer(button3);
 }
 
-function navigate(text: string, transitionName?: string, clearHistory?: boolean) {
-    let navigationTransition = createNavigationTransition(transitionName);
+function navigate(text: string, transitionName?: string, clearHistory: boolean = false, animated: boolean = true) {
     topmostFrame().navigate({
         create: () => new NavPage(text),
-        animated: true,
+        animated: animated,
         clearHistory: clearHistory,
-        transition: navigationTransition,
-    });
-}
-
-function createNavigationTransition(transitionName: string): NavigationTransition {
-    let navigationTransition: NavigationTransition;
-    if (transitionName === "custom") {
-        let customTransitionModule = require("./custom-transition");
-        let customTransition = new customTransitionModule.CustomTransition(duration);
-        navigationTransition = {
-            instance: customTransition
-        };
-    }
-    else if (transitionName) {
-        navigationTransition = {
+        transition: {
             name: transitionName,
-            duration: duration
+            duration: duration,
+            instance: transitionName === "custom" ? new CustomTransition(duration, null) : null
         }
-    }
-    return navigationTransition;
+    });
 }
