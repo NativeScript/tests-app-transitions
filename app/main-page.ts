@@ -4,7 +4,7 @@ import { LayoutBase } from "ui/layouts/layout-base";
 import { Button } from "ui/button";
 import { Label } from "ui/label";
 import * as platform from "platform";
-import { topmost as topmostFrame, NavigationTransition} from "ui/frame";
+import { topmost as topmostFrame, NavigationTransition } from "ui/frame";
 import { NavPage } from "./nav-page";
 
 let waterfall = require('async-waterfall');
@@ -35,12 +35,16 @@ export function onLoaded(args: EventData) {
 
     if (platform.isAndroid) {
         createButtons("slide", container, mainPage, true);
+        createButtons("default", container, mainPage, true);
     }
 }
 
 function createButtons(transitionName: string, container: LayoutBase, mainPage: Page, cachePagesOnNavigate: boolean) {
     let button1 = new Button();
 
+    // 0. cachePagesOnNavigate
+    // 1. navigate with transition
+    // 2. navigate with go back
     button1.text = `${transitionName} trans -> go back${cachePagesOnNavigate ? " + CPON" : ""}`;
     button1.on("tap", (e) => {
         waterfall([
@@ -69,6 +73,10 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
     });
     container.addChild(button1);
 
+    // 0. cachePagesOnNavigate
+    // 1. navigate without transition
+    // 2. navigate with transition
+    // 3. navigate with clearHistory
     let button2 = new Button();
     button2.text = `no trans -> ${transitionName} trans + CH${cachePagesOnNavigate ? " + CPON" : ""}`;
     button2.on("tap", (e) => {
@@ -102,6 +110,10 @@ function createButtons(transitionName: string, container: LayoutBase, mainPage: 
     });
     container.addChild(button2);
 
+    // 0. cachePagesOnNavigate
+    // 1. navigate with transition
+    // 2. navigate with transition and clearHistory
+    // 3. navigate with clearHistory
     let button3 = new Button();
     button3.text = `${transitionName} trans -> ${transitionName} trans + CH${cachePagesOnNavigate ? " + CPON" : ""}`;
     button3.on("tap", (e) => {
