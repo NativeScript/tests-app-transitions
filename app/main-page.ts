@@ -35,7 +35,8 @@ export function onLoaded(args: EventData) {
 
     if (platform.isAndroid) {
         createButtons("slide", container, mainPage, true);
-        createButtons("default", container, mainPage, true);
+        // Temporary remove to check tests
+        // createButtons("default", container, mainPage, true);
     }
 }
 
