@@ -27,7 +27,11 @@ export class CustomTransition extends transition.Transition {
                 scaleValues[0], 
                 scaleValues[1], 
                 scaleValues[0], 
-                scaleValues[1]
+                scaleValues[1],
+                android.view.animation.Animation.RELATIVE_TO_SELF,
+                0.5,
+                android.view.animation.Animation.RELATIVE_TO_SELF,
+                0.5
             ));
 
         return animationSet;
