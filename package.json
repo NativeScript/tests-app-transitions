@@ -6,10 +6,10 @@
   "nativescript": {
     "id": "org.nativescript.testsapptransitions",
     "tns-ios": {
-      "version": "next"
+      "version": "6.0.0-2019-06-19-084246-01"
     },
     "tns-android": {
-      "version": "next"
+      "version": "6.0.0-2019-06-19-230109-04"
     }
   },
   "dependencies": {
@@ -17,8 +17,8 @@
     "tns-core-modules": "next"
   },
   "devDependencies": {
-    "nativescript-dev-typescript": "next",
-    "typescript": "~2.8.3",
+    "nativescript-dev-webpack": "next",
+    "typescript": "~3.4.0",
     "tns-platform-declarations": "next"
   }
 }
