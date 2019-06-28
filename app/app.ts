@@ -6,4 +6,4 @@ trace.setCategories(trace.categories.concat(
     trace.categories.Navigation,
     trace.categories.Transition
 ));
-application.start({ moduleName: "main-page" });
+application.run({ moduleName: "app-root" });
